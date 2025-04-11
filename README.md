@@ -49,6 +49,16 @@ JsonWithImages::make('Галерея', 'images')
     ]);
 ```
 
+## Настройки
+
+| Метод | Описание | По умолчанию |
+|-------|----------|--------------|
+| `setDisk(string $disk)` | Устанавливает диск для хранения | 'public' |
+| `setDirectory(string $directory)` | Устанавливает директорию для хранения | 'images' |
+| `setPrimaryKey(string $primaryKey)` | Устанавливает название поля первичного ключа | 'id' |
+| `setImageFieldName(string $imageFieldName)` | Устанавливает название поля для изображения | 'url' |
+| `saveOnlyFields(array $fields)` | Устанавливает поля для сохранения | [] (все поля) |
+
 ## Методы
 
 ### Основные методы
