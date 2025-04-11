@@ -27,7 +27,8 @@ use App\MoonShine\Fields\JsonWithImages;
 
 JsonWithImages::make('Изображения', 'images')
     ->fields([
-        // Поля для каждого элемента JSON
+        ID::make('id'), // Поле ID должно обязательно присутствовать
+        // Указываем поля, которые есть в таблице images
     ]);
 ```
 
