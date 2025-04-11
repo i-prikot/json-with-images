@@ -34,7 +34,7 @@ JsonWithImages::make('Изображения', 'images')
 ### Расширенные настройки
 
 ```php
-JsonWithImages::make('Галерея', 'gallery')
+JsonWithImages::make('Галерея', 'images')
     ->setDisk('public') // Установка диска для хранения
     ->setDirectory('gallery') // Директория для изображений
     ->setPrimaryKey('id') // Поле первичного ключа
