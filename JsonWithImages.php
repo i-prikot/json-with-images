@@ -129,12 +129,13 @@ class JsonWithImages extends Json
     protected function processNewImages(Model $item, array $images): void
     {
         $newImages = array_filter($images, fn($image) => isset($image[$this->imageFieldName]) && !isset($image["hidden_{$this->imageFieldName}"]));
+        $imageRelationName = $this->column;
 
         foreach ($newImages as $image) {
             $imageData = $this->prepareImageData($image);
             // Сохранить новое изображение
             $imageData[$this->imageFieldName] = $this->storeUploadedImage($image[$this->imageFieldName]);
-            $item->images()->create($imageData);
+            $item->$imageRelationName()->create($imageData);
         }
     }
 
@@ -166,11 +167,12 @@ class JsonWithImages extends Json
     protected function processExistingImages(Model $item, array $images): void
     {
         $existingImages = array_filter($images, fn($image) => isset($image[$this->primaryKey]));
-        
+        $imageRelationName = $this->column;
+
         foreach ($existingImages as $image) {
             $imageData = $this->handleImageUpdate($image);
             
-            $item->images()
+            $item->$imageRelationName()
                 ->where($this->primaryKey, $image[$this->primaryKey])
                 ->update($imageData);
         }
@@ -209,7 +211,9 @@ class JsonWithImages extends Json
         $idsToDelete = array_diff($existingIds, $updatedIds);
  
         if (!empty($idsToDelete)) {
-            $item->images->whereIn($this->primaryKey, $idsToDelete)->each(fn($image) => $image->delete());
+            // Связь с таблицей изображений
+            $relation = $this->column;
+            $item->$relation->whereIn($this->primaryKey, $idsToDelete)->each(fn($image) => $image->delete());
         }
     }
 

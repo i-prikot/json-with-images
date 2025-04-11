@@ -41,7 +41,10 @@ JsonWithImages::make('Галерея', 'gallery')
     ->setImageFieldName('url') // Само изображение
     ->saveOnlyFields(['alt', 'url', 'order']) // Сохранять только указанные поля
     ->fields([
-        // Поля формы
+        ID::make('id'),
+        Image::make('Изображение', 'url'),
+        Text::make('Альтернативный текст', 'alt'),
+        Number::make('Порядок', 'order')->default(10),
     ]);
 ```
 
