@@ -30,7 +30,7 @@ class JsonWithImages extends Json
     protected string $directory = 'images';
 
     /**
-     * Установить диск для хранения изображений
+     * Set the storage disk for images
      * 
      * @param string $disk
      * @return $this
@@ -42,7 +42,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Установить директорию для хранения изображений
+     * Set the directory for image storage
      * 
      * @param string $directory
      * @return $this
@@ -54,7 +54,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Установить первичный ключ для модели
+     * Set the primary key for the model
      * 
      * @param string $primaryKey
      * @return $this
@@ -72,7 +72,7 @@ class JsonWithImages extends Json
     }
     
     /**
-     * Установить поля, которые будут сохраняться
+     * Set fields that should be saved
      * 
      * @param array $fields
      * @return $this
@@ -95,7 +95,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Сохраняем данные
+     * Save the data
      * 
      * @param mixed|Model $data
      * @return mixed
@@ -108,7 +108,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Обрабатываем изображения
+     * Process images
      * 
      * @param Model $item
      * @param array $images
@@ -121,7 +121,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Сохранение новых изображений
+     * Save new images
      * 
      * @param Model $item
      * @param array $images
@@ -133,14 +133,13 @@ class JsonWithImages extends Json
 
         foreach ($newImages as $image) {
             $imageData = $this->prepareImageData($image);
-            // Сохранить новое изображение
             $imageData[$this->imageFieldName] = $this->storeUploadedImage($image[$this->imageFieldName]);
             $item->$imageRelationName()->create($imageData);
         }
     }
 
     /**
-     * Обработка изображения
+     * Process image update
      * 
      * @param array $image
      */
@@ -159,7 +158,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Обновление существующих изображений
+     * Update existing images
      * 
      * @param Model $item
      * @param array $images
@@ -179,8 +178,8 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Подготовить данные изображения
-     * Оставляем только те поля, которые нужно сохранить, которые присутствуют в полях модели
+     * Prepare image data
+     * Keep only fields that need to be saved and are present in model fields
      * 
      * @param array $image
      * @return array
@@ -199,15 +198,15 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Удалить удаленные изображения
+     * Delete removed images
      * 
      * @param Model $item
-     * @param array $images
+     * @param array $data
      */
-    protected function deleteRemovedImages(Model $item, array $images): void
+    protected function deleteRemovedImages(Model $item, array $data): void
     {
         $existingIds = $item->images->pluck($this->primaryKey)->toArray();
-        $updatedIds = array_filter(array_column($images, $this->primaryKey));
+        $updatedIds = array_filter(array_column($data, $this->primaryKey));
         $idsToDelete = array_diff($existingIds, $updatedIds);
  
         if (!empty($idsToDelete)) {
@@ -218,7 +217,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Генерируем уникальное имя файла
+     * Generate unique filename
      * 
      * @param string $name
      * @return string
@@ -240,7 +239,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Сохранить загруженное изображение
+     * Save uploaded image
      * 
      * @param UploadedFile $uploadedFile
      * @return string
@@ -254,7 +253,7 @@ class JsonWithImages extends Json
     }
 
     /**
-     * Удалить изображение
+     * Delete image
      * 
      * @param string $filename
      */

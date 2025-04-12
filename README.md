@@ -1,91 +1,94 @@
-# JsonWithImages - Поле для работы с JSON и изображениями в MoonShine
+# JsonWithImages - Field for Working with JSON and Images in MoonShine
 
-## Описание
+## Description
 
-Класс `JsonWithImages` расширяет стандартное поле `Json` в MoonShine, добавляя функциональность для работы с изображениями в JSON-структуре. Поле предназначено для управления коллекцией изображений с возможностью загрузки, обновления и удаления.
+The `JsonWithImages` class extends the standard `Json` field in MoonShine, adding functionality for working with images in a JSON structure. This field is designed to manage a collection of images with the ability to upload, update, and delete them.
 
-## Особенности
+This is the English version. Other languages:
+- [Русский](README.ru.md)
 
-- Работа с изображениями в JSON-структуре
-- Интеграция с отношениями Laravel (MorphMany)
-- Автоматическое управление файлами изображений (загрузка, обновление, удаление)
-- Гибкая настройка параметров хранения
-- Поддержка только определенных полей для сохранения
+## Features
 
-## Установка
+- Working with images in a JSON structure
+- Integration with Laravel relationships (MorphMany)
+- Automatic management of image files (upload, update, deletion)
+- Flexible storage parameter configuration
+- Support for saving only specific fields
 
-1. Поместите файл класса в директорию `app/MoonShine/Fields/`
-2. Используйте в своих ресурсах MoonShine
-3. Обязательно должно присутствовать поле primaryKey ID::make('id')
+## Installation
 
-## Использование
+1. Place the class file in the `app/MoonShine/Fields/` directory
+2. Use it in your MoonShine resources
+3. The primaryKey field ID::make('id') must be present
 
-### Базовое использование
+## Usage
+
+### Basic Usage
 
 ```php
 use App\MoonShine\Fields\JsonWithImages;
 
-JsonWithImages::make('Изображения', 'images')
+JsonWithImages::make('Images', 'images')
     ->fields([
-        ID::make('id'), // Поле ID должно обязательно присутствовать
-        // Указываем поля, которые есть в таблице images
+        ID::make('id'), // The ID field must be present
+        // Specify the fields that exist in the images table
     ]);
 ```
 
-### Расширенные настройки
+### Advanced Configuration
 
 ```php
-JsonWithImages::make('Галерея', 'images')
-    ->setDisk('public') // Установка диска для хранения
-    ->setDirectory('gallery') // Директория для изображений
-    ->setPrimaryKey('id') // Поле первичного ключа
-    ->setImageFieldName('url') // Само изображение
-    ->saveOnlyFields(['alt', 'url', 'order']) // Сохранять только указанные поля
+JsonWithImages::make('Gallery', 'images')
+    ->setDisk('public') // Set the storage disk
+    ->setDirectory('gallery') // Directory for images
+    ->setPrimaryKey('id') // Primary key field
+    ->setImageFieldName('url') // The image field itself
+    ->saveOnlyFields(['alt', 'url', 'order']) // Save only specified fields
     ->fields([
         ID::make('id'),
-        Image::make('Изображение', 'url'),
-        Text::make('Альтернативный текст', 'alt'),
-        Number::make('Порядок', 'order')->default(10),
+        Image::make('Image', 'url'),
+        Text::make('Alternative text', 'alt'),
+        Number::make('Order', 'order')->default(10),
     ]);
 ```
 
-## Настройки
+## Settings
 
-| Метод | Описание | По умолчанию |
+| Method | Description | Default |
 |-------|----------|--------------|
-| `setDisk(string $disk)` | Устанавливает диск для хранения | 'public' |
-| `setDirectory(string $directory)` | Устанавливает директорию для хранения | 'images' |
-| `setPrimaryKey(string $primaryKey)` | Устанавливает название поля первичного ключа | 'id' |
-| `setImageFieldName(string $imageFieldName)` | Устанавливает название поля для изображения | 'url' |
-| `saveOnlyFields(array $fields)` | Устанавливает поля для сохранения | [] (все поля) |
+| `setDisk(string $disk)` | Sets the storage disk | 'public' |
+| `setDirectory(string $directory)` | Sets the storage directory | 'images' |
+| `setPrimaryKey(string $primaryKey)` | Sets the primary key field name | 'id' |
+| `setImageFieldName(string $imageFieldName)` | Sets the image field name | 'url' |
+| `saveOnlyFields(array $fields)` | Sets fields to save | [] (all fields) |
 
-## Методы
+## Methods
 
-### Основные методы
+### Main Methods
 
-- `setDisk(string $disk)` - Установить диск для хранения изображений
-- `setDirectory(string $directory)` - Установить директорию для хранения
-- `setPrimaryKey(string $primaryKey)` - Установить поле первичного ключа
-- `setImageFieldName(string $imageFieldName)` - Установить поле для хранения пути к изображению
-- `saveOnlyFields(array $fields)` - Установить поля, которые нужно сохранять
+- `setDisk(string $disk)` - Set the storage disk for images
+- `setDirectory(string $directory)` - Set the storage directory
+- `setPrimaryKey(string $primaryKey)` - Set the primary key field
+- `setImageFieldName(string $imageFieldName)` - Set the field for storing the image path
+- `saveOnlyFields(array $fields)` - Set fields to be saved
 
-### Внутренние методы
+### Internal Methods
 
-- `handleImagesUpdate(Model $item, array $images)` - Обработка обновления изображений
-- `processNewImages(Model $item, array $images)` - Обработка новых изображений
-- `processExistingImages(Model $item, array $images)` - Обработка существующих изображений
-- `deleteRemovedImages(Model $item, array $images)` - Удаление удаленных изображений
-- `storeUploadedImage(UploadedFile $uploadedFile)` - Сохранение загруженного изображения
-- `deleteImage(string $filename)` - Удаление изображения
+- `handleImagesUpdate(Model $item, array $images)` - Handle image updates
+- `processNewImages(Model $item, array $images)` - Process new images
+- `processExistingImages(Model $item, array $images)` - Process existing images
+- `deleteRemovedImages(Model $item, array $images)` - Delete removed images
+- `storeUploadedImage(UploadedFile $uploadedFile)` - Save an uploaded image
+- `deleteImage(string $filename)` - Delete an image
 
-## Интеграция с MorphMany
+## Integration with MorphMany
 
-Поле полностью поддерживает работу с отношениями MorphMany в Laravel. Для работы необходимо:
+The field fully supports working with MorphMany relationships in Laravel. To use it:
 
-1. Убедиться, что модель имеет соответствующее отношение morphMany
-2. Использовать поле в ресурсе MoonShine как обычно
+1. Ensure the model has the corresponding morphMany relationship
+2. Use the field in the MoonShine resource as usual
 
-Пример отношения в модели:
+Example relationship in a model:
 
 ```php
 public function images(): MorphMany
@@ -94,6 +97,6 @@ public function images(): MorphMany
 }
 ```
 
-## Требования
+## Requirements
 
 - MoonShine 3+
